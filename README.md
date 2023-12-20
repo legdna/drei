@@ -7,7 +7,7 @@
 ## Features
 
 - **Interactive Setup**: The script interactively guides users through the installation process.
-- **Distribution Support**: Supports Debian, Fedora, Arch Linux, and their equivalents.
+- **Distribution Support**: Supports Debian, Fedora, Arch Linux, OpenSUSE and their equivalents.
 - **Containerized Environment**: Uses `distrobox` to create a containerized environment for installing DaVinci Resolve.
 - **Dependency Management**: Automatically installs necessary dependencies based on the user's Linux distribution.
 

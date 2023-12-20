@@ -148,9 +148,9 @@ while [[ $yes_or_no != "o" ]] && [[ $yes_or_no != "O" ]]; do
 done
 
 if [[ $nvidia_choice == 2 ]]; then
-	distrobox-create --name drei --image fedora:38 --nvidia
+	distrobox-create --name drei --image fedora:38 --nvidia --yes
 else
-	distrobox-create --name drei --image fedora:38
+	distrobox-create --name drei --image fedora:38 --yes
 fi
 distrobox-enter --name drei -- sudo dnf install -y alsa-plugins-pulseaudio libxcrypt-compat xcb-util-renderutil xcb-util-wm pulseaudio-libs xcb-util xcb-util-image xcb-util-keysyms libxkbcommon-x11 libXrandr libXtst mesa-libGLU mtdev libSM libXcursor libXi libXinerama libxkbcommon libglvnd-egl libglvnd-glx libglvnd-opengl libICE librsvg2 libSM libX11 libXcursor libXext libXfixes libXi libXinerama libxkbcommon libxkbcommon-x11 libXrandr libXrender libXtst libXxf86vm mesa-libGLU mtdev pulseaudio-libs xcb-util alsa-lib apr apr-util fontconfig freetype libglvnd fuse-libs fuse rocm-opencl
 
