@@ -20,6 +20,7 @@
 ```bash
 git clone https://github.com/legdna/drei
 cd drei
+chmod +x ./drei.sh
 ./drei.sh
 ```
 
