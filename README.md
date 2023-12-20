@@ -11,14 +11,18 @@
 - **Containerized Environment**: Uses `distrobox` to create a containerized environment for installing DaVinci Resolve.
 - **Dependency Management**: Automatically installs necessary dependencies based on the user's Linux distribution.
 
+## Compatibility
+
+- **AMD Only** (Nvidia is working progress)
+
 ## Usage
 
-    ```bash
-    git clone https://github.com/legdna/drei
-    cd drei
-    ./drei-by-legdna.sh
-    ```
+```bash
+git clone https://github.com/legdna/drei
+cd drei
+./drei.sh
+```
 
-4. Follow the on-screen instructions to complete the installation.
+Follow the on-screen instructions to complete the installation.
 
 **Note: This project is in the alpha stage, and issues may arise during installation or usage. Use with caution, and consider backing up important data before running the script. Contributions and bug reports are highly appreciated.**
