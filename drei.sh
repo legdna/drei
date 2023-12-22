@@ -39,7 +39,7 @@ function title {
 		     \__\/        \  \:\        \  \::/        \__\/  
 		                   \__\/         \__\/                
 	\e[0;1m
-		 by legdna                                    rev.a0.2
+		 by legdna                                    rev.a0.3
 	
 	
 	\e[0m\n"
