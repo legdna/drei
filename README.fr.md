@@ -1,5 +1,7 @@
 # drei - DaVinci Resolve Easy Installer (Beta)
 
+[![en](https://img.shields.io/badge/lang-english-yellow.svg)](https://github.com/legdna/drei/blob/main/README.md)
+
 **Attention: Ce projet est actuellement en phase beta. Utiliser le en sachant que certains problèmes peuvent survenir lors de son utilisation.**
 
 **drei** et un script bash designer pour simplifier le processus d'installation de DaVinci Resolve sur toutes les distributions Linux. Le script utilise la conteneurisation pour garantir un environnement cohérent entre les différents systèmes.
