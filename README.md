@@ -1,6 +1,6 @@
-# drei - DaVinci Resolve Easy Installer (Alpha)
+# drei - DaVinci Resolve Easy Installer (Beta)
 
-**Caution: This project is currently in the alpha stage. Use with care and expect potential issues.**
+**Caution: This project is currently in the beta stage. Use with care and expect potential issues.**
 
 **drei** is a bash script designed to simplify the installation process of DaVinci Resolve on Linux distributions. The script utilizes containerization to ensure a consistent environment across different systems.
 
@@ -13,7 +13,11 @@
 
 ## Compatibility
 
-- **AMD Only** (Nvidia is working progress)
+- **AMD GPUs**
+- **NVIDIA GPUs**
+- **biGPUs (OPTIMUS, iGPU + dGPU, ...)**
+
+- **Intel-only GPUs are not supported by DaVinci Resolve**
 
 ## Usage
 
@@ -26,4 +30,4 @@ chmod +x ./drei.sh
 
 Follow the on-screen instructions to complete the installation.
 
-**Note: This project is in the alpha stage, and issues may arise during installation or usage. Use with caution, and consider backing up important data before running the script. Contributions and bug reports are highly appreciated.**
+**Note: This project is in the beta stage, and issues may arise during installation or usage. Use with caution, and consider backing up important data before running the script. Contributions and bug reports are highly appreciated.**
