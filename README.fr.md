@@ -1,6 +1,6 @@
 # drei - DaVinci Resolve Easy Installer (Beta)
 
-[![en](https://img.shields.io/badge/lang-english-yellow.svg)](https://github.com/legdna/drei/blob/main/README.md)
+[![en](https://img.shields.io/badge/language-english-blue.svg)](https://github.com/legdna/drei/blob/main/README.md)
 
 **Attention: Ce projet est actuellement en phase beta. Utiliser le en sachant que certains problèmes peuvent survenir lors de son utilisation.**
 
