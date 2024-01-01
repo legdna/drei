@@ -49,7 +49,7 @@ function title {
 
 		 \e[0;46;30;1m  DaVinci Resolve Easy Installer  \e[0;1m
 
-		 by legdna                                    rev.a0.4
+		 by legdna                                    rev.b0.4
 
 	\e[0m\n"
 }
