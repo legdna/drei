@@ -34,4 +34,4 @@ chmod +x ./drei.sh
 
 Suivez les instructions à l'écran pour compléter l'installation.
 
-**Note: Ce project est en phase beta, des problèmes peuvent donc survenir durant l'installation où l'utilisation. Utiliser le donc avec précaution, et considérer qu'il est préférable d'éffectuer une backup de vos données importantes avant l'exécution du script. Les contributions et rapports de bugs sont hautement appréciés.**
+**Note: Ce project est en phase beta, des problèmes peuvent donc survenir durant l'installation où l'utilisation. Utiliser le donc avec précaution, et considérer qu'il est préférable d'effectuer une backup de vos données importantes avant l'exécution du script. Les contributions et rapports de bugs sont hautement appréciés.**
