@@ -1,0 +1,148 @@
+
+                                  ### FRENCH ###
+
+
+###################################################################################
+##                                     ERROR                                     ##
+###################################################################################
+
+ROOT_EXECUTION_DETECTION="\n
+  	    \e[41;1m                                                            \e[0m
+	    \e[41;1m  Ce script ne supporte pas l'exécution en tant que root !  \e[0m
+	    \e[41;1m                                                            \e[0m
+\n\n"
+
+SYNTAX_ERROR_DETECTION="\n
+				\e[41;1m                       \e[0m
+				\e[41;1m  Erreur de syntaxe !  \e[0m
+				\e[41;1m                       \e[0m
+\n\n"
+
+ELEVATION_PRIVILEGE_ERROR_DETECTION="\n
+		\e[41;1m                                                          \e[0m
+		\e[41;1m    Mot de passe incorrect où vous n'avez pas de droit    \e[0m
+		\e[41;1m    root sur votre machine !                              \e[0m
+		\e[41;1m                                                          \e[0m
+\n\n"
+
+
+###################################################################################
+##                                     MENU                                      ##
+###################################################################################
+
+PREVIOUS_INSTALLATION_DETECTION_MENU="\n
+			\e[45;1m                                          \e[0m
+			\e[45;1m    Précédente installation détecter !    \e[0m
+			\e[45;1m                                          \e[0m
+\n\n"
+
+SETTINGS_MENU="\n
+				\e[44;1m                       \e[0m
+				\e[44;1m        Options        \e[0m
+				\e[44;1m                       \e[0m
+\n\n"
+
+SUMMARY_MENU="\n
+				\e[46;1m                       \e[0m
+				\e[46;1m     Récapitulatif     \e[0m
+				\e[46;1m                       \e[0m
+\n\n"
+
+
+###################################################################################
+##                                     INPUT                                     ##
+###################################################################################
+
+ROOT_PASSWORD_INPUT="\n
+	\e[42;1m                                                                        \e[0m
+	\e[42;1m  Entrez votre mot de passe utilisateur pour installer les dépendances  \e[0m
+	\e[42;1m  nécessaire au programme.                                              \e[0m
+	\e[42;1m                                                                        \e[0m
+\n\n"
+
+PREVIOUS_INSTALLATION_INPUT="\e[36;1m  Que souhaitez-vous faire ?\e[0m\n
+	1. \e[32;1mMettre à jour DaVinci Resolve\e[0m
+	2. \e[34;1mRéinstaller DaVinci Resolve\e[0m
+	3. \e[31;1mDésinstaller DaVinci Resolve\e[0m
+\n\e[33;1m  -> \e[0m"
+
+DISTRO_INPUT="\e[36;1m  Sur quelle distribution Linux êtes-vous ?\e[0m\n
+	1. \e[31;1mDebian\e[0m ou équivalent (Ubuntu, Linux Mint, ...)
+	2. \e[34;1mFedora\e[0m ou équivalent (Bazzite, ...)
+	3. \e[36;1mArch Linux\e[0m ou équivalent (Manjaro, Endeavour, ...)
+	4. \e[32;1mOpenSUSE\e[0m ou équivalent (SUSE, ...)
+\n\e[33;1m  -> \e[0m"
+
+DAVINCI_RESOLVE_INPUT="\e[36;1m  Quelle édition de DaVinci Resolve souhaitez-vous installer ?\e[0m\n
+	1. \e[35;1mDaVinci Resolve (Gratuit)\e[0m
+	2. \e[35;1mDaVinci Resolve Studio (Payant)\e[0m
+\n\e[33;1m  -> \e[0m"
+
+NVIDIA_INPUT="\n\e[36;1m  Avez-vous une carte NVIDIA ? o/N : \e[0m"
+
+BIGPU_INPUT="\n\e[36;1m  Avez-vous une configuration biGPU (OPTIMUS, iGPU + dGPU, ...) ? o/N : \e[0m"
+
+MANAGER_INPUT="\n\e[36;1m  Souhaitez-vous installer le Gestionnaire d'installation de DREI ? O/n : \e[0m"
+
+SUMMARY_INPUT="\n\n\e[33;1m  Voulez-vous appliquer ces options lors de l'installation ? o/N : \e[0m"
+
+DAVINCI_RESOLVE_DOWNLOAD_FILE="\n
+	  \e[42;1m                                                                   \e[0m
+	  \e[42;1m    Téléchargez votre version de DaVinci Resolve sur :             \e[0m
+	  \e[42;34;1m    https://www.blackmagicdesign.com/fr/products/davinciresolve    \e[0m
+	  \e[42;1m                                                                   \e[0m
+
+	  \e[33;1mUne fois fait glisser déposer le fichier 'zip' téléchargé ici : \e[0m"
+
+
+###################################################################################
+##                                    OUTPUT                                     ##
+###################################################################################
+
+DAVINCI_RESOLVE_DOWNLOAD="\n
+			\e[42;1m                                          \e[0m
+			\e[42;1m   Téléchargement de DaVinci Resolve...   \e[0m
+			\e[42;1m                                          \e[0m
+\n\n"
+
+DAVINCI_RESOLVE_DOWNLOAD_FINISH="\n
+			\e[42;1m                                          \e[0m
+			\e[42;1m         Téléchargement terminé !         \e[0m
+			\e[42;1m                                          \e[0m
+\n\n"
+
+INSTALL_OUTPUT="\n
+		\e[42;1m                                                 \e[0m
+		\e[42;1m   L'installation s'est terminée avec succès !   \e[0m
+		\e[42;1m                                                 \e[0m
+\n\n"
+
+UPDATE_OUTPUT="\n
+		\e[42;1m                                                 \e[0m
+		\e[42;1m   La mise à jour s'est terminée avec succès !   \e[0m
+		\e[42;1m                                                 \e[0m
+\n\n"
+
+REINSTALL_OUTPUT="\n
+		\e[44;1m                                                  \e[0m
+		\e[44;1m  La réinstallation s'est terminée avec succès !  \e[0m
+		\e[44;1m                                                  \e[0m
+\n\n"
+
+UNINSTALL_OUTPUT="\n
+		\e[41;1m                                                   \e[0m
+		\e[41;1m  La désinstallation s'est terminée avec succès !  \e[0m
+		\e[41;1m                                                   \e[0m
+\n\n"
+
+DEBIAN_TYPE="\e[31;1mDebian\e[0m ou équivalent (Ubuntu, Linux Mint, ...)"
+
+FEDORA_TYPE="\e[34;1mFedora\e[0m ou équivalent (Bazzite, ...)"
+
+ARCHLINUX_TYPE="\e[36;1mArch Linux\e[0m ou équivalent (Manjaro, Endeavour, ...)"
+
+OPENSUSE_TYPE="\e[32;1mOpenSUSE\e[0m ou équivalent (SUSE, ...)"
+
+YES_OUTPUT="\e[1mOui\e[0m"
+
+NO_OUTPUT="\e[1mNon\e[0m"

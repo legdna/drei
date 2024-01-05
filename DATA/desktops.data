@@ -1,0 +1,51 @@
+DAVINVI_DESKTOP="[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DaVinci Resolve (drei)
+Comment=Revolutionary new tools for editing, visual effects, color correction and professional audio post production, all in a single application!
+Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  /opt/resolve/bin/resolve  %u
+Terminal=false
+MimeType=application/x-resolveproj;
+Icon=$HOME/.local/share/icons/drei/blackmagic-resolve.png
+StartupNotify=true"
+
+RAW_PLAYER_DESKTOP="[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Blackmagic RAW Player (drei)
+Icon=$HOME/.local/share/icons/drei/blackmagicraw-player.png
+Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  /opt/resolve/BlackmagicRAWPlayer/BlackmagicRAWPlayer  %f
+Terminal=false
+MimeType=application/x-braw-clip;application/x-braw-sidecar
+Categories=Video"
+
+RAW_SPEEDTEST="[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Blackmagic RAW Speed Test (drei)
+Icon=$HOME/.local/share/icons/drei/blackmagicraw-speedtest.png
+Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  /opt/resolve/BlackmagicRAWSpeedTest/BlackmagicRAWSpeedTest  %f
+Terminal=false
+Categories=Video"
+
+CONTROL_PANELS="[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DaVinci Control Panels Setup (drei)
+Icon=$HOME/.local/share/icons/drei/blackmagic-panels.png
+Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  '/opt/resolve/DaVinci\ Control\ Panels\ Setup/DaVinci\ Control\ Panels\ Setup'
+Terminal=false"
+
+DREI_IM="[Desktop Entry]
+Version=b0.5
+Type=Application
+Name=DREI Installation Manager
+Name[fr]=Gestionnaire d'installation de DREI
+Name[en]=DREI Installation Manager
+Comment=An installation manager for DREI
+Comment[fr]=Un gestionnaire d'installation pour DREI
+Comment[en]=An installation manager for DREI
+Exec=/usr/bin/bash $HOME/.var/app/io.github.legdna.drei-im/drei.sh %u
+Terminal=true
+Icon=$HOME/.local/share/icons/drei/drei.png
+StartupNotify=true"

@@ -1,23 +1,31 @@
 #!/usr/bin/bash
-set -e
+
+script_path=$(dirname $0)
+lang_detection=$(printf $LANG | grep -o "fr")
+if [[ $lang_detection == "fr" ]]; then
+	source $script_path/LANG/fr.lang
+	
+else
+	source $script_path/LANG/en.lang
+fi
+source $script_path/DATA/desktops.data
+set +o allexport
 
 if [[ $EUID -eq 0 ]]; then
-  printf "\n
-  		\e[41;1m                                                            \e[0m
-		\e[41;1m  Ce script ne supporte pas l'exécution en tant que root !  \e[0m
-		\e[41;1m                                                            \e[0m
-	\n\n"
+	printf "$ROOT_EXECUTION_DETECTION"
     exit 1
 fi
-test_sudo=$(command -v sudo)
-if [[ $? -ne 0 ]]; then
-    printf "\n
-		\e[41;1m                                                           \e[0m
-		\e[41;1m        Sudo n'est pas installé sur votre machine !        \e[0m
-		\e[41;1m                                                           \e[0m
-	\n\n"
-    exit 1
+
+# test_sudo=$(command -v sudo)
+
+test_sudoers=$(groups $USER | grep -o "sudo") || test_sudoers=$(groups $USER | grep -o "wheel")
+if [[ $? -eq 0 ]]; then
+	test_sudoers_result=1
+else
+	test_sudoers_result=0
 fi
+
+set -e
 
 # "black"      "\e[30m"
 # "red"        "\e[31m"
@@ -49,54 +57,46 @@ function title {
 
 		 \e[0;46;30;1m  DaVinci Resolve Easy Installer  \e[0;1m
 
-		 by legdna                                    rev.b0.4
+		 by legdna                                    rev.b0.5
 
 	\e[0m\n"
 }
 
 # Message lorsqu'une précédente installation est détecter
 function old_install {
-	printf "\n
-			\e[45;1m                                          \e[0m
-			\e[45;1m    Précédente installation détecter !    \e[0m
-			\e[45;1m                                          \e[0m
-	\n\n"
+	printf "$PREVIOUS_INSTALLATION_DETECTION_MENU"
 }
 
 # Message d'erreur lors d'une syntaxe douteuse
 function error_syntax {
-	printf "\n
-				\e[41;1m                       \e[0m
-				\e[41;1m  Erreur de syntaxe !  \e[0m
-				\e[41;1m                       \e[0m
-	\n\n"
+	printf "$SYNTAX_ERROR_DETECTION"
+}
+
+function error_root {
+	printf "$ELEVATION_PRIVILEGE_ERROR_DETECTION"
+	exit 1
 }
 
 # Message pour le menu des options
 function options {
-	printf "\n
-				\e[44;1m                       \e[0m
-				\e[44;1m        Options        \e[0m
-				\e[44;1m                       \e[0m
-	\n\n"
+	printf "$SETTINGS_MENU"
 }
 
 # Message pour le récapitulatif des options sélectionner
 function recap_options {
-	printf "\n
-				\e[46;1m                       \e[0m
-				\e[46;1m     Récapitulatif     \e[0m
-				\e[46;1m                       \e[0m
-	\n\n"
+	printf "$SUMMARY_MENU"
 }
 
 function root_passwd {
-	printf "\n
-	\e[42;1m                                                                        \e[0m
-	\e[42;1m  Entrez votre mot de passe utilisateur pour installer les dépendances  \e[0m
-	\e[42;1m  nécessaire au programme.                                              \e[0m
-	\e[42;1m                                                                        \e[0m
-  	\n\n"
+	printf "$ROOT_PASSWORD_INPUT"
+}
+
+function davinci_download {
+	printf "$DAVINCI_RESOLVE_DOWNLOAD"
+}
+
+function davinci_download_finish {
+	printf "$DAVINCI_RESOLVE_DOWNLOAD_FINISH"
 }
 
 clear
@@ -109,11 +109,7 @@ if [[ $old_install_detection == "drei" ]]; then
 		if [[ $old_install_choice == -1 ]]; then
 			clear; title; error_syntax; sleep 2; clear; title; old_install
 		fi
-		printf "\e[36;1m  Que souhaitez-vous faire ?\e[0m\n"
-		printf "\n	1. \e[32;1mMettre à jour DaVinci Resolve\e[0m"
-		printf "\n	2. \e[34;1mRéinstaller DaVinci Resolve\e[0m"
-		printf "\n	3. \e[31;1mDésinstaller DaVinci Resolve\e[0m"
-		printf "\n\e[33;1m  -> \e[0m"; read old_install_check
+		printf "$PREVIOUS_INSTALLATION_INPUT"; read old_install_check
 		if [[ $old_install_check =~ ^[1-3]$ ]]; then
 			old_install_choice=1
 		else
@@ -122,22 +118,25 @@ if [[ $old_install_detection == "drei" ]]; then
 		clear
 	done
 	case $old_install_check in
+		1)
+			davinci_choice=$(cat $HOME/.config/drei/davinci.edition) ;;
+		
 		2)
 			distrobox-rm -f drei
 			clear ;;
 		3)
 			distrobox-rm -f drei
 			if [[ -d "$HOME/.var/app/io.github.legdna.drei-im" ]]; then
+				rm -fv "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve.desktop"
+				rm -fv "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawplayer.desktop"
+				rm -fv "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawspeedtest.desktop"
+				rm -fv "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve-Panels.desktop"
 				rm -fv "$HOME/.local/share/applications/drei-im.desktop"
-				rm -fv "$HOME/.local/share/icons/hicolor/128x128/apps/drei.png"
+				rm -rfv "$HOME/.local/share/icons/drei"
 				rm -rfv "$HOME/.var/app/io.github.legdna.drei-im"
 			fi
 			clear
-			printf "\n
-				\e[41;1m                                                   \e[0m
-				\e[41;1m  La désinstallation s'est terminée avec succès !  \e[0m
-				\e[41;1m                                                   \e[0m
-			\n\n"
+			printf "$UNINSTALL_OUTPUT"
 			exit 0 ;;
 	esac
 fi
@@ -147,24 +146,37 @@ if [[ $old_install_check != 1 ]]; then
 
 	# Initiallisation de la variable yes_or_no et d'une boucle while pour vérifier les erreurs de syntaxe
 	yes_or_no="NULL"
-	while [[ $yes_or_no != "o" ]] && [[ $yes_or_no != "O" ]]; do
+	while [[ $yes_or_no != "o" ]] && [[ $yes_or_no != "O" ]] && [[ $yes_or_no != "y" ]] && [[ $yes_or_no != "Y" ]]; do
 		distro_choice=0
 		while [[ $distro_choice == 0 ]] || [[ $distro_choice == -1 ]]; do
 			title; options
 			if [[ $distro_choice == -1 ]]; then
 				clear; title; error_syntax; sleep 2; clear; title; options
 			fi
-			printf "\e[36;1m  Sur quelle distribution Linux êtes-vous ?\e[0m\n"
-			printf "\n	1. \e[31;1mDebian\e[0m ou équivalent (Ubuntu, Linux Mint, ...)"
-			printf "\n	2. \e[34;1mFedora\e[0m ou équivalent (Bazzite, ...)"
-			printf "\n	3. \e[36;1mArch Linux\e[0m ou équivalent (Manjaro, Endeavour, ...)"
-			printf "\n	4. \e[32;1mOpenSUSE\e[0m ou équivalent (SUSE, ...)\n"
-			printf "\n\e[33;1m  -> \e[0m"; read distro
+			printf "$DISTRO_INPUT"; read distro
 			if [[ $distro =~ ^[1-4]$ ]]; then
 				distro_choice=1
 			else
 				distro_choice=-1
 			fi
+			clear
+		done
+
+		davinci_choice=0
+		while [[ $davinci_choice == 0 ]] || [[ $davinci_choice == -1 ]]; do
+			title; options
+			if [[ $davinci_choice == -1 ]]; then
+				clear; title; error_syntax; sleep 2; clear; title; options
+			fi
+			printf "$DAVINCI_RESOLVE_INPUT"; read davinci_check
+			case $davinci_check in
+				1)
+					davinci_choice=1 ;;
+				2)
+					davinci_choice=2 ;;
+				*)
+					davinci_choice=-1 ;;
+			esac
 			clear
 		done
 
@@ -174,8 +186,8 @@ if [[ $old_install_check != 1 ]]; then
 			if [[ $nvidia_choice == -1 ]]; then
 				clear; title; error_syntax; sleep 2; clear; title; options
 			fi
-			printf "\n\e[36;1m  Avez-vous une carte NVIDIA ? o/N : \e[0m"; read nvidia_check
-			if [[ $nvidia_check == "o" ]] || [[ $nvidia_check == "O" ]]; then
+			printf "$NVIDIA_INPUT"; read nvidia_check
+			if [[ $nvidia_check == "o" ]] || [[ $nvidia_check == "O" ]] || [[ $nvidia_check == "y" ]] || [[ $nvidia_check == "Y" ]]; then
 				nvidia_choice=2
 			elif [[ $nvidia_check == "n" ]] || [[ $nvidia_check == "N" ]] || [[ $nvidia_check == "" ]]; then
 				nvidia_choice=1
@@ -191,8 +203,8 @@ if [[ $old_install_check != 1 ]]; then
 			if [[ $bigpu_choice == -1 ]]; then
 				clear; title; error_syntax; sleep 2; clear; title; options
 			fi
-			printf "\n\e[36;1m  Avez-vous une configuration biGPU (OPTIMUS, iGPU + dGPU, ...) ? o/N : \e[0m"; read bigpu_check
-			if [[ $bigpu_check == "o" ]] || [[ $bigpu_check == "O" ]]; then
+			printf "$BIGPU_INPUT"; read bigpu_check
+			if [[ $bigpu_check == "o" ]] || [[ $bigpu_check == "O" ]] || [[ $bigpu_check == "y" ]] || [[ $bigpu_check == "Y" ]]; then
 				bigpu_choice=2
 			elif [[ $bigpu_check == "n" ]] || [[ $bigpu_check == "N" ]] || [[ $bigpu_check == "" ]]; then
 				bigpu_choice=1
@@ -208,8 +220,8 @@ if [[ $old_install_check != 1 ]]; then
 			if [[ $manager_choice == -1 ]]; then
 				clear; title; error_syntax; sleep 2; clear; title; options
 			fi
-			printf "\n\e[36;1m  Souhaitez-vous installer le Gestionnaire d'installation de DREI ? O/n : \e[0m"; read manager_check
-			if [[ $manager_check == "o" ]] || [[ $manager_check == "O" ]] || [[ $manager_check == "" ]]; then
+			printf "$MANAGER_INPUT"; read manager_check
+			if [[ $manager_check == "o" ]] || [[ $manager_check == "O" ]] || [[ $manager_check == "y" ]] || [[ $manager_check == "Y" ]] || [[ $manager_check == "" ]]; then
 				manager_choice=2
 			elif [[ $manager_check == "n" ]] || [[ $manager_check == "N" ]]; then
 				manager_choice=1
@@ -228,16 +240,24 @@ if [[ $old_install_check != 1 ]]; then
 
 			case $distro in
 				1)
-					distro_type="\e[31;1mDebian\e[0m ou équivalent (Ubuntu, Linux Mint, ...)" ;;
+					distro_type=$DEBIAN_TYPE ;;
 				2)
-					distro_type="\e[34;1mFedora\e[0m ou équivalent (Bazzite, ...)" ;;
+					distro_type=$FEDORA_TYPE ;;
 				3)
-					distro_type="\e[36;1mArch Linux\e[0m ou équivalent (Manjaro, Endeavour, ...)" ;;
+					distro_type=$ARCHLINUX_TYPE ;;
 				4)
-					distro_type="\e[32;1mOpenSUSE\e[0m ou équivalent (SUSE, ...)" ;;
+					distro_type=$OPENSUSE_TYPE ;;
 			esac
 			printf "\n  \e[44;1m  Distro  :  \e[0;1m	$distro_type \e[0m"
 
+			case $davinci_choice in
+				1)
+					davinci_type="\e[35;1mDaVinci Resolve\e[0m" ;;
+				2)
+					davinci_type="\e[35;1mDaVinci Resolve Studio\e[0m" ;;
+			esac
+			printf "\n  \e[44;1m  Edition :  \e[0;1m	$davinci_type \e[0m"
+			
 			case $nvidia_choice in
 				1)
 					gpu_type="\e[31;1mAMD\e[0m" ;;
@@ -248,23 +268,23 @@ if [[ $old_install_check != 1 ]]; then
 
 			case $bigpu_choice in
 				1)
-					bigpu_type="\e[1mNon\e[0m" ;;
+					bigpu_type=$NO_OUTPUT ;;
 				2)
-					bigpu_type="\e[1mOui\e[0m" ;;
+					bigpu_type=$YES_OUTPUT ;;
 			esac
 			printf "\n  \e[44;1m  biGPU   :  \e[0;1m	$bigpu_type \e[0m"
 			
 			case $manager_choice in
 				1)
-					manager_type="\e[1mNon\e[0m" ;;
+					manager_type=$NO_OUTPUT ;;
 				2)
-					manager_type="\e[1mOui\e[0m" ;;
+					manager_type=$YES_OUTPUT ;;
 			esac
 			printf "\n  \e[44;1m  Manager :  \e[0;1m	$manager_type \e[0m"
 
-			printf "\n\n\e[33;1m  Voulez-vous appliquer ces options lors de l'installation ? o/N : \e[0m"
+			printf "$SUMMARY_INPUT"
 			read yes_or_no
-			if [[ $yes_or_no == "o" ]] || [[ $yes_or_no == "O" ]]; then
+			if [[ $yes_or_no == "o" ]] || [[ $yes_or_no == "O" ]] || [[ $yes_or_no == "y" ]] || [[ $yes_or_no == "Y" ]]; then
 				recap_choice=2
 			elif [[ $yes_or_no == "n" ]] || [[ $yes_or_no == "N" ]] || [[ $yes_or_no == "" ]]; then
 				recap_choice=1
@@ -277,19 +297,37 @@ if [[ $old_install_check != 1 ]]; then
 
 	if [[ $old_install_check != 2 ]]; then
 		clear; title; root_passwd
-		case $distro in	
+		case $test_sudoers_result in
+			0)
+				case $distro in	
+					1)
+						su - -c "apt update -y; apt upgrade -y; apt install -y distrobox podman fuse-overlayfs unzip curl" ;;
+					2)
+						su - -c "dnf update -y"
+						su - -c "dnf install -y distrobox podman fuse-overlayfs unzip curl" ;;
+					3)
+						su - -c "pacman -Suy --noconfirm distrobox podman fuse-overlayfs unzip curl" ;;
+					4)
+						su - -c "zypper update -y"
+						su - -c "zypper install -y distrobox podman fuse-overlayfs unzip curl" ;;
+				esac ;;
 			1)
-				sudo apt update -y && sudo apt upgrade -y
-				sudo apt install -y distrobox podman fuse-overlayfs unzip ;;
-			2)
-				sudo dnf update -y
-				sudo dnf install -y distrobox podman fuse-overlayfs unzip ;;
-			3)
-				sudo pacman -Suy --noconfirm distrobox podman fuse-overlayfs unzip ;;
-			4)
-				sudo zypper update -y
-				sudo zypper install -y distrobox podman fuse-overlayfs unzip ;;
-		esac
+				case $distro in	
+					1)
+						sudo apt update -y && sudo apt upgrade -y
+						sudo apt install -y distrobox podman fuse-overlayfs unzip curl ;;
+					2)
+						sudo dnf update -y
+						sudo dnf install -y distrobox podman fuse-overlayfs unzip curl ;;
+					3)
+						sudo pacman -Suy --noconfirm distrobox podman fuse-overlayfs unzip curl ;;
+					4)
+						sudo zypper update -y
+						sudo zypper install -y distrobox podman fuse-overlayfs unzip curl ;;
+				esac ;;
+		esac || {
+			clear; error_root
+		}
 	fi
 
 	if [[ $nvidia_choice == 2 ]]; then
@@ -300,19 +338,65 @@ if [[ $old_install_check != 1 ]]; then
 	distrobox-enter --name drei -- sudo dnf install -y alsa-plugins-pulseaudio libxcrypt-compat xcb-util-renderutil xcb-util-wm pulseaudio-libs xcb-util xcb-util-image xcb-util-keysyms libxkbcommon-x11 libXrandr libXtst mesa-libGLU mtdev libSM libXcursor libXi libXinerama libxkbcommon libglvnd-egl libglvnd-glx libglvnd-opengl libICE librsvg2 libSM libX11 libXcursor libXext libXfixes libXi libXinerama libxkbcommon libxkbcommon-x11 libXrandr libXrender libXtst libXxf86vm mesa-libGLU mtdev pulseaudio-libs xcb-util alsa-lib apr apr-util fontconfig freetype libglvnd fuse-libs fuse rocm-opencl
 fi
 
-clear; title
+clear; title; davinci_download
 
-printf "\n
-	  \e[42;1m                                                                   \e[0m
-	  \e[42;1m    Téléchargez votre version de DaVinci Resolve sur :             \e[0m
-	  \e[42;34;1m    https://www.blackmagicdesign.com/fr/products/davinciresolve    \e[0m
-	  \e[42;1m                                                                   \e[0m
+{
+	user_agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64) \
+	                        AppleWebKit/537.36 (KHTML, like Gecko) \
+    	                    Chrome/77.0.3865.75 \
+        	                Safari/537.36"
 
-	\e[33;1mUne fois fait glisser déposer le fichier 'zip' téléchargé ici : \e[0m"
-read davinci_path
+	case $davinci_choice in
+		1)
+			latest_release=$(curl -s "https://www.blackmagicdesign.com/api/support/latest-stable-version/davinci-resolve/linux")
+			req_json="{ \
+	    		\"firstname\": \"DREI\", \
+	    		\"lastname\": \"IM\", \
+	    		\"email\": \"drei-im@distrobox.script\", \
+	    		\"phone\": \"202-555-0194\", \
+	    		\"country\": \"us\", \
+	    		\"street\": \"Bowery 146\", \
+	    		\"state\": \"New York\", \
+	    		\"city\": \"Distrobox\", \
+	    		\"product\": \"DaVinci Resolve\" \
+			}" ;;
+		2)
+			latest_release=$(curl -s "https://www.blackmagicdesign.com/api/support/latest-stable-version/davinci-resolve-studio/linux")
+			req_json="{ \
+	    		\"firstname\": \"DREI\", \
+	    		\"lastname\": \"IM\", \
+	    		\"email\": \"drei-im@distrobox.script\", \
+	    		\"phone\": \"202-555-0194\", \
+	    		\"country\": \"us\", \
+	    		\"street\": \"Bowery 146\", \
+	    		\"state\": \"New York\", \
+	    		\"city\": \"Distrobox\", \
+	    		\"product\": \"DaVinci Resolve Studio\" \
+			}" ;;
+	esac
 
-davinci_path="${davinci_path//\'/}"
-script_path=$(dirname $0)
+	download_id=$(printf "%s" $latest_release | sed -n 's/.*"downloadId":"\([^"]*\).*/\1/p')
+	davinci_version=$(printf "%s" $latest_release | awk -F'[,:]' '{for(i=1;i<=NF;i++){if($i~/"major"/){print $(i+1)} if($i~/"minor"/){print $(i+1)} if($i~/"releaseNum"/){print $(i+1)}}}' | sed 'N;s/\n/./;N;s/\n/./')
+
+	req_json="$(printf '%s' "$req_json" | sed 's/[[:space:]]\+/ /g')"
+	user_agent="$(printf '%s' "$user_agent" | sed 's/[[:space:]]\+/ /g')"
+	user_agent_escaped="${user_agent// /\\ }"
+
+	site_url="https://www.blackmagicdesign.com/api/register/us/download/${download_id}"
+	davinci_url="$(curl -s -H 'Host: www.blackmagicdesign.com' -H 'Accept: application/json, text/plain, */*' -H 'Origin: https://www.blackmagicdesign.com' -H "$user_agent" -H 'Content-Type: application/json;charset=UTF-8' -H "Referer: https://www.blackmagicdesign.com/support/download/${download_id}/Linux" -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9' -H 'Authority: www.blackmagicdesign.com' -H 'Cookie: _ga=GA1.2.1849503966.1518103294; _gid=GA1.2.953840595.1518103294' --data-ascii "$req_json" --compressed "$site_url")"
+
+	curl -o $script_path/davinci.zip $davinci_url
+	davinci_path="$script_path/davinci.zip"
+
+	clear; title; davinci_download_finish
+} 
+
+#printf "$DAVINCI_RESOLVE_DOWNLOAD_FILE"
+#read davinci_path
+
+#davinci_path="${davinci_path//\'/}"
+
+
 tmp_path="$HOME/.cache/drei"
 if [[ ! -d "$tmp_path" ]]; then
 	mkdir -v $tmp_path
@@ -337,117 +421,82 @@ distrobox-enter --name drei -- sudo rm -rf "/opt/resolve/libs/libgmodule-2.0.so"
 distrobox-enter --name drei -- sudo rm -rf "/opt/resolve/libs/libgmodule-2.0.so.0"
 distrobox-enter --name drei -- sudo rm -rf "/opt/resolve/libs/libgmodule-2.0.so.0.6800.4"
 
-distrobox-enter --name drei -- distrobox-export -a "/opt/resolve/bin/resolve"
-cat << EOF > "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve.desktop"
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DaVinci Resolve (drei)
-Comment=Revolutionary new tools for editing, visual effects, color correction and professional audio post production, all in a single application!
-Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  /opt/resolve/bin/resolve  %u
-Terminal=false
-MimeType=application/x-resolveproj;
-Icon=$HOME/.local/share/icons/DV_Resolve.png
-StartupNotify=true
-EOF
-if [[ $bigpu_choice == 2 ]]; then
-	echo "PrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve.desktop"
+
+if [[ ! -d "$HOME/.local/share/icons" ]]; then
+	mkdir -v "$HOME/.local/share/icons"
+fi
+if [[ ! -d "$HOME/.local/share/icons/drei" ]]; then
+	mkdir -v "$HOME/.local/share/icons/drei"
 fi
 
-distrobox-enter --name drei -- distrobox-export -a "/opt/resolve/BlackmagicRAWPlayer/BlackmagicRAWPlayer"
-cat << EOF > "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawplayer.desktop"
-[Desktop Entry]
-Type=Application
-Version=1.0
-Name=Blackmagic RAW Player (drei)
-Icon=blackmagicraw-player
-Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  /opt/resolve/BlackmagicRAWPlayer/BlackmagicRAWPlayer  %f
-Terminal=false
-MimeType=application/x-braw-clip;application/x-braw-sidecar
-Categories=Video
-EOF
+
+cp -fv "$script_path/DATA/ICONS/blackmagic-resolve.png" "$HOME/.local/share/icons/drei/blackmagic-resolve.png"
+printf "$DAVINVI_DESKTOP" > "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve.desktop"
 if [[ $bigpu_choice == 2 ]]; then
-	echo "PrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawplayer.desktop"
+	printf "\nPrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve.desktop"
 fi
 
-distrobox-enter --name drei -- distrobox-export -a "/opt/resolve/BlackmagicRAWSpeedTest/BlackmagicRAWSpeedTest"
-cat << EOF > "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawspeedtest.desktop"
-[Desktop Entry]
-Type=Application
-Version=1.0
-Name=Blackmagic RAW Speed Test (drei)
-Icon=blackmagicraw-speedtest
-Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  /opt/resolve/BlackmagicRAWSpeedTest/BlackmagicRAWSpeedTest  %f
-Terminal=false
-Categories=Video
-EOF
+cp -fv "$script_path/DATA/ICONS/blackmagicraw-player.png" "$HOME/.local/share/icons/drei/blackmagicraw-player.png"
+printf "$RAW_PLAYER_DESKTOP" > "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawplayer.desktop"
 if [[ $bigpu_choice == 2 ]]; then
-	echo "PrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawspeedtest.desktop"
+	printf "\nPrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawplayer.desktop"
 fi
 
-distrobox-enter --name drei -- distrobox-export -a "/opt/resolve/DaVinci Control Panels Setup/DaVinci Control Panels Setup"
-cat << EOF > "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve-Panels.desktop"
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=DaVinci Control Panels Setup (drei)
-Exec=/usr/bin/distrobox-enter  -n drei -- /bin/sh -l -c  "/opt/resolve/DaVinci\ Control\ Panels\ Setup/DaVinci\ Control\ Panels\ Setup"
-Terminal=false
-Icon=$HOME/.local/share/icons/DV_Panels.png
-EOF
+cp -fv "$script_path/DATA/ICONS/blackmagicraw-speedtest.png" "$HOME/.local/share/icons/drei/blackmagicraw-speedtest.png"
+printf "$RAW_SPEEDTEST" > "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawspeedtest.desktop"
 if [[ $bigpu_choice == 2 ]]; then
-	echo "PrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve-Panels.desktop"
+	printf "\nPrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.rawspeedtest.desktop"
+fi
+
+cp -fv "$script_path/DATA/ICONS/blackmagic-panels.png" "$HOME/.local/share/icons/drei/blackmagic-panels.png"
+printf "$CONTROL_PANELS" > "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve-Panels.desktop"
+if [[ $bigpu_choice == 2 ]]; then
+	printf "\nPrefersNonDefaultGPU = true" >> "$HOME/.local/share/applications/drei-com.blackmagicdesign.resolve-Panels.desktop"
 fi
 
 if [[ $manager_choice == 2 ]]; then
+	if [[ ! -d "$HOME/.var" ]]; then
+		mkdir -v "$HOME/.var"
+	fi
+	if [[ ! -d "$HOME/.var/app" ]]; then
+		mkdir -v "$HOME/.var/app"
+	fi
 	if [[ ! -d "$HOME/.var/app/io.github.legdna.drei-im" ]]; then
 		mkdir -v "$HOME/.var/app/io.github.legdna.drei-im"
 	fi
 
 	if [[ $script_path != "$HOME/.var/app/io.github.legdna.drei-im" ]]; then
 		cp -fv "$script_path/drei.sh" "$HOME/.var/app/io.github.legdna.drei-im/drei.sh"
-		cp -fv "$script_path/drei.png" "$HOME/.var/app/io.github.legdna.drei-im/drei.png"
-		cp -fv "$script_path/drei.png" "$HOME/.local/share/icons/hicolor/128x128/apps/drei.png"
-		cat << EOF > "$HOME/.local/share/applications/drei-im.desktop"
-[Desktop Entry]
-Version=a0.4
-Type=Application
-Name=DREI Installation Manager
-Name[fr]=Gestionnaire d'installation de DREI
-Name[en]=DREI Installation Manager
-Comment=An installation manager for DREI
-Comment[fr]=Un gestionnaire d'installation pour DREI
-Comment[en]=An installation manager for DREI
-Exec=/usr/bin/bash $HOME/.var/app/io.github.legdna.drei-im/drei.sh %u
-Terminal=true
-MimeType=application/drei;
-Icon=drei
-StartupNotify=true
-EOF
+		cp -rfv "$script_path/DATA" "$HOME/.var/app/io.github.legdna.drei-im/DATA"
+		cp -rfv "$script_path/LANG" "$HOME/.var/app/io.github.legdna.drei-im/LANG"
+		cp -fv "$script_path/DATA/ICONS/drei.png" "$HOME/.local/share/icons/drei/drei.png"
+		printf "$DREI_IM" > "$HOME/.local/share/applications/drei-im.desktop"
 	fi
 fi
+
+if [[ ! -d "$HOME/.config/drei" ]]; then
+	mkdir -v "$HOME/.config/drei"
+fi
+if [[ -f $HOME/.config/drei/davinci.edition ]]; then
+	rm -fv $HOME/.config/drei/davinci.edition
+fi
+
+case $davinci_choice in
+	1)
+		printf "1" > $HOME/.config/drei/davinci.edition ;;
+	2)
+		printf "2" > $HOME/.config/drei/davinci.edition ;;
+esac
 
 clear
 
 case $old_install_check in
 	0)
-		printf "\n
-				\e[42;1m                                                 \e[0m
-				\e[42;1m   L'installation s'est terminée avec succès !   \e[0m
-				\e[42;1m                                                 \e[0m
-		\n\n";;
+		printf "$INSTALL_OUTPUT" ;;
 	1)
-		printf "\n
-				\e[42;1m                                                 \e[0m
-				\e[42;1m   La mise à jour s'est terminée avec succès !   \e[0m
-				\e[42;1m                                                 \e[0m
-		\n\n";;
+		printf "$UPDATE_OUTPUT" ;;
 	2)
-		printf "\n
-				\e[44;1m                                                  \e[0m
-				\e[44;1m  La réinstallation s'est terminée avec succès !  \e[0m
-				\e[44;1m                                                  \e[0m
-		\n\n";;
+		printf "$REINSTALL_OUTPUT" ;;
 esac
 
 exit 0

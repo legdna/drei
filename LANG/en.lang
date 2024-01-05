@@ -1,0 +1,148 @@
+
+                                  ### ENGLISH ###
+
+
+###################################################################################
+##                                     ERROR                                     ##
+###################################################################################
+
+ROOT_EXECUTION_DETECTION="\n
+  		\e[41;1m                                                            \e[0m
+		\e[41;1m       This script does not support running as root !       \e[0m
+		\e[41;1m                                                            \e[0m
+\n\n"
+
+SYNTAX_ERROR_DETECTION="\n
+				\e[41;1m                      \e[0m
+				\e[41;1m    Syntax error !    \e[0m
+				\e[41;1m                      \e[0m
+\n\n"
+
+ELEVATION_PRIVILEGE_ERROR_DETECTION="\n
+		\e[41;1m                                                         \e[0m
+		\e[41;1m      incorrect password where you do not have root      \e[0m
+		\e[41;1m      rights on your computer !                          \e[0m
+		\e[41;1m                                                         \e[0m
+\n\n"
+
+
+###################################################################################
+##                                     MENU                                      ##
+###################################################################################
+
+PREVIOUS_INSTALLATION_DETECTION="\n
+			\e[45;1m                                          \e[0m
+			\e[45;1m      Previous installation detect !      \e[0m
+			\e[45;1m                                          \e[0m
+\n\n"
+
+SETTINGS_MENU="\n
+				\e[44;1m                      \e[0m
+				\e[44;1m       Settings       \e[0m
+				\e[44;1m                      \e[0m
+\n\n"
+
+SUMMARY_MENU="\n
+				\e[46;1m                       \e[0m
+				\e[46;1m        Summary        \e[0m
+				\e[46;1m                       \e[0m
+\n\n"
+
+
+###################################################################################
+##                                     INPUT                                     ##
+###################################################################################
+
+ROOT_PASSWORD_INPUT="\n
+	\e[42;1m                                                                        \e[0m
+	\e[42;1m   Enter your user password to install the dependencies necessary for   \e[0m
+	\e[42;1m   the program.                                                         \e[0m
+	\e[42;1m                                                                        \e[0m
+\n\n"
+
+PREVIOUS_INSTALLATION_INPUT="\e[36;1m  What do you want to do ?\e[0;1m\n
+	1. \e[32;1mUpdate DaVinci Resolve\e[0;1m
+	2. \e[34;1mReinstall DaVinci Resolve\e[0;1m
+	3. \e[31;1mUninstall DaVinci Resolve\e[0m
+\n\e[33;1m  -> \e[0m"
+
+DISTRO_INPUT="\e[36;1m  What distribution are you on ?\e[0m\n
+	1. \e[31;1mDebian\e[0m or equivalent (Ubuntu, Linux Mint, ...)
+	2. \e[34;1mFedora\e[0m or equivalent (Bazzite, ...)
+	3. \e[36;1mArch Linux\e[0m or equivalent (Manjaro, Endeavour, ...)
+	4. \e[32;1mOpenSUSE\e[0m or equivalent (SUSE, ...)
+\n\e[33;1m  -> \e[0m"
+
+DAVINCI_RESOLVE_INPUT="\e[36;1m  Which edition of DaVinci Resolve do you want to install ?\e[0m\n
+	1. \e[35;1mDaVinci Resolve (Free)\e[0m
+	2. \e[35;1mDaVinci Resolve Studio (Paid)\e[0m
+\n\e[33;1m  -> \e[0m"
+
+NVIDIA_INPUT="\n\e[36;1m  Do you have an NVIDIA card ? y/N : \e[0m"
+
+BIGPU_INPUT="\n\e[36;1m  Do you have a biGPU configuration (OPTIMUS, iGPU + dGPU, ...) ? y/N : \e[0m"
+
+MANAGER_INPUT="\n\e[36;1m  Do you want to install DREI installation Manager ? Y/n : \e[0m"
+
+SUMMARY_INPUT="\n\n\e[33;1m  Do you want to apply these options during installation ? y/N : \e[0m"
+
+DAVINCI_RESOLVE_DOWNLOAD_FILE="\n
+	  \e[42;1m                                                                   \e[0m
+	  \e[42;1m    Download your version of DaVinci Resolve at :                  \e[0m
+	  \e[42;34;1m    https://www.blackmagicdesign.com/fr/products/davinciresolve    \e[0m
+	  \e[42;1m                                                                   \e[0m
+
+	  \e[33;1mOnce download drag and drop the 'zip' file here : \e[0m"
+
+
+###################################################################################
+##                                    OUTPUT                                     ##
+###################################################################################
+
+DAVINCI_RESOLVE_DOWNLOAD="\n
+			\e[42;1m                                        \e[0m
+			\e[42;1m     Downloading DaVinci Resolve...     \e[0m
+			\e[42;1m                                        \e[0m
+\n\n"
+
+DAVINCI_RESOLVE_DOWNLOAD_FINISH="\n
+			\e[42;1m                                       \e[0m
+			\e[42;1m          Download complete !          \e[0m
+			\e[42;1m                                       \e[0m
+\n\n"
+
+INSTALL_OUTPUT="\n
+		\e[42;1m                                                 \e[0m
+		\e[42;1m      installation completed successfully !      \e[0m
+		\e[42;1m                                                 \e[0m
+\n\n"
+
+UPDATE_OUTPUT="\n
+		\e[42;1m                                                 \e[0m
+		\e[42;1m         Update completed successfully !         \e[0m
+		\e[42;1m                                                 \e[0m
+\n\n"
+
+REINSTALL_OUTPUT="\n
+		\e[44;1m                                                 \e[0m
+		\e[44;1m     Reinstallation completed successfully !     \e[0m
+		\e[44;1m                                                 \e[0m
+\n\n"U
+
+NINSTALL_OUTPUT="\n
+		\e[41;1m                                                   \e[0m
+		\e[41;1m      Uninstallation completed successfully !      \e[0m
+		\e[41;1m                                                   \e[0m
+\n\n"
+
+DEBIAN_TYPE="\e[31;1mDebian\e[0m or equivalent (Ubuntu, Linux Mint, ...)"
+
+FEDORA_TYPE="\e[34;1mFedora\e[0m or equivalent (Bazzite, ...)"
+
+ARCHLINUX_TYPE="\e[36;1mArch Linux\e[0m or equivalent (Manjaro, Endeavour, ...)"
+
+OPENSUSE_TYPE="\e[32;1mOpenSUSE\e[0m or equivalent (SUSE, ...)"
+
+YES_OUTPUT="\e[1mYes\e[0m"
+
+NO_OUTPUT="\e[1mNo\e[0m"
