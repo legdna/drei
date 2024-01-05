@@ -6,7 +6,7 @@
 
 **drei** et un script bash designer pour simplifier le processus d'installation de DaVinci Resolve sur toutes les distributions Linux. Le script utilise la conteneurisation pour garantir un environnement cohérent entre les différents systèmes.
 
-![Preview](https://github.com/legdna/drei/blob/main/preview.png)
+![Preview](https://github.com/legdna/drei/blob/main/preview-fr.png)
 
 ## Fonctionnalités
 

@@ -6,7 +6,7 @@
 
 **drei** is a bash script designed to simplify the installation process of DaVinci Resolve on Linux distributions. The script utilizes containerization to ensure a consistent environment across different systems.
 
-![Preview](https://github.com/legdna/drei/blob/main/preview.png)
+![Preview](https://github.com/legdna/drei/blob/main/preview-en.png)
 
 ## Features
 
