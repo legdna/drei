@@ -2,7 +2,8 @@
 
 [![en](https://img.shields.io/badge/language-english-blue.svg)](https://github.com/legdna/drei/blob/main/README.md)
 
-**Attention: Ce projet est actuellement en phase beta. Utiliser le en sachant que certains problèmes peuvent survenir lors de son utilisation.**
+> [!CAUTION]
+> **Ce projet est actuellement en phase beta. Utiliser le en sachant que certains problèmes peuvent survenir lors de son utilisation.**
 
 **drei** et un script bash designer pour simplifier le processus d'installation de DaVinci Resolve sur toutes les distributions Linux. Le script utilise la conteneurisation pour garantir un environnement cohérent entre les différents systèmes.
 
@@ -34,4 +35,5 @@ chmod +x ./drei.sh
 
 Suivez les instructions à l'écran pour compléter l'installation.
 
-**Note: Ce project est en phase beta, des problèmes peuvent donc survenir durant l'installation où l'utilisation. Utiliser le donc avec précaution, et considérer qu'il est préférable d'éffectuer une backup de vos données importantes avant l'exécution du script. Les contributions et rapports de bugs sont hautement appréciés.**
+> [!NOTE]
+> **Ce project est en phase beta, des problèmes peuvent donc survenir durant l'installation où l'utilisation. Utiliser le donc avec précaution, et considérer qu'il est préférable d'éffectuer une backup de vos données importantes avant l'exécution du script. Les contributions et rapports de bugs sont hautement appréciés.**
