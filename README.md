@@ -3,7 +3,7 @@
 [![fr](https://img.shields.io/badge/langue-français-blue.svg)](https://github.com/legdna/drei/blob/main/README.fr.md)
 
 > [!CAUTION]
-> This project is currently in the beta stage. Use with care and expect potential issues.**
+> **This project is currently in the beta stage. Use with care and expect potential issues.**
 
 **drei** is a bash script designed to simplify the installation process of DaVinci Resolve on Linux distributions. The script utilizes containerization to ensure a consistent environment across different systems.
 
@@ -36,4 +36,4 @@ chmod +x ./drei.sh
 Follow the on-screen instructions to complete the installation.
 
 > [!NOTE]
-> This project is in the beta stage, and issues may arise during installation or usage. Use with caution, and consider backing up important data before running the script. Contributions and bug reports are highly appreciated.**
+> **This project is in the beta stage, and issues may arise during installation or usage. Use with caution, and consider backing up important data before running the script. Contributions and bug reports are highly appreciated.**
